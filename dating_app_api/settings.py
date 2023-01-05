@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'bcrypt'
     'corsheaders',
     'rest_framework',
     'dating_api',
