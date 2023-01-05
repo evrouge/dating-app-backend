@@ -1,3 +1,8 @@
+from pathlib import Path
+import dj_database_url # add this
+import os # add this
+
+
 """
 Django settings for dating_app_api project.
 
@@ -13,7 +18,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) # edit this var
 
 
 # Quick-start development settings - unsuitable for production
@@ -25,12 +30,13 @@ SECRET_KEY = 'django-insecure-h&j(v!^+e#hozhm7*vkv(#f-5tgf5+&z8ohur&263b+7^t%qo7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', 'serene-mountain-09515.herokuapp.com']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'bcrypt',
     'corsheaders',
     'rest_framework',
     'dating_api',
@@ -44,6 +50,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', # add this
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -52,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage' # add this
 
 CORS_ALLOW_ALL_ORIGINS = True
 
@@ -89,6 +97,17 @@ DATABASES = {
     }
 }
 
+db_from_env = dj_database_url.config(conn_max_age=600) # add this
+DATABASES['default'].update(db_from_env) # add this
+############
+# Bcrypt password Hashers
+############
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.Argon2PasswordHasher',
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -124,7 +143,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') # add this
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

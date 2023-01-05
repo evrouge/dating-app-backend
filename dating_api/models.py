@@ -2,6 +2,8 @@ from django.db import models
 
 # Create your models here.
 class Dating(models.Model):
+    email = models.CharField(max_length=75, unique=True)
+    password = models.CharField(max_length=1000)
     name = models.CharField(max_length=32)
     age = models.IntegerField()
     ethnicity = models.CharField(max_length=32)
