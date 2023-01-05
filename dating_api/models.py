@@ -1,6 +1,8 @@
 from django.db import models
 
 # Create your models here.
+
+
 class Dating(models.Model):
     name = models.CharField(max_length=32)
     age = models.IntegerField()
@@ -9,3 +11,8 @@ class Dating(models.Model):
     hobbies = models.TextField()
     occupation = models.CharField(max_length=32)
     image = models.TextField()
+
+
+class User(models.Model):
+    username = models.CharField(max_length=50, unique=True)
+    password = models.CharField(max_length=50)
